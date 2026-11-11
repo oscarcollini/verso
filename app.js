@@ -26,15 +26,23 @@ try {
 byId('offset').value = correction;
 
 function readOrientation(event) {
-  const absolute = event.absolute === true || event.type === 'deviceorientationabsolute';
-  if (!Number.isFinite(event.beta) || (absoluteSeen && !absolute)) return;
+  const hasHeading = (event.absolute === true || event.type === 'deviceorientationabsolute')
+    && Number.isFinite(event.alpha);
+  if (!Number.isFinite(event.beta) || !Number.isFinite(event.gamma) || (absoluteSeen && !hasHeading)) return;
+
   const beta = event.beta * radians;
-  const horizontal = Math.cos(beta);
-  const rawAzimuth = absolute && Number.isFinite(event.alpha)
-    ? wrap(-event.alpha + (horizontal < 0 ? 180 : 0))
-    : null;
-  if (absolute && Number.isFinite(event.alpha)) absoluteSeen = true;
-  current = { rawAzimuth, altitude: Math.asin(Math.sin(beta)) / radians };
+  const gamma = event.gamma * radians;
+  // Apply the device's intrinsic Z-X-Y rotations to the rear-facing axis (0, 0, -1).
+  const x = -Math.sin(gamma);
+  const y = Math.sin(beta) * Math.cos(gamma);
+  const up = -Math.cos(beta) * Math.cos(gamma);
+  const horizontal = Math.hypot(x, y);
+  // At the poles azimuth is undefined. The device's right axis still orients the reticle.
+  const bearing = horizontal < 1e-6 ? Math.atan2(-Math.sin(beta) * Math.sin(gamma), Math.cos(gamma))
+    : Math.atan2(x, y);
+  const rawAzimuth = hasHeading ? wrap(bearing / radians - event.alpha) : null;
+  absoluteSeen ||= hasHeading;
+  current = { rawAzimuth, altitude: Math.atan2(up, horizontal) / radians };
   clearTimeout(sensorTimeout);
   byId('start').hidden = true;
   byId('hold').disabled = false;
@@ -49,12 +57,12 @@ function render() {
   byId('azimuth').textContent = azimuth === null ? '—' : `${wrap(Math.round(azimuth))}° ${cardinal[Math.round(azimuth / 45) % 8]}`;
   byId('altitude').textContent = `${Math.round(reading.altitude) > 0 ? '+' : ''}${Math.round(reading.altitude)}°`;
   byId('rose').style.transform = `rotate(${-(azimuth ?? 0)}deg)`;
-  byId('raw-heading').textContent = `Lettura del sensore: ${reading.rawAzimuth === null ? '—' : wrap(Math.round(reading.rawAzimuth)) + '°'}`;
+  byId('raw-heading').textContent = `Lettura del sensore: ${azimuth === null ? '—' : wrap(Math.round(reading.rawAzimuth)) + '°'}`;
   const status = frozen
     ? 'Lettura fissata'
     : azimuth === null
-      ? (heading === null ? 'Azimut non disponibile' : 'Telefono verticale · azimut indefinito')
-      : correction ? 'Azimut corretto · punta con il bordo superiore' : 'Nord del sensore · punta con il bordo superiore';
+      ? (heading === null ? 'Azimut non disponibile' : 'Mira verticale · azimut indefinito')
+      : correction ? 'Azimut corretto · punta come per scattare una foto' : 'Nord del sensore · punta come per scattare una foto';
   if (byId('sensor-status').textContent !== status) byId('sensor-status').textContent = status;
   if (target) renderTarget(heading, reading.altitude);
 }
