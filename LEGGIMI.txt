@@ -1,0 +1,18 @@
+Strumenti · prova 0.1
+
+Pubblica i file estratti nella cartella servita da GitHub Pages.
+Apri l'indirizzo HTTPS in Chrome su Android e tocca Attiva sensori.
+Il comando Installa apre la richiesta di installazione quando disponibile.
+Puoi anche usare il menu di Chrome.
+
+Punta con il bordo superiore del telefono in verticale, lungo il suo asse.
+Fissa blocca le due letture. Riprendi torna alle letture dal vivo.
+In Cerca inserisci azimut e altezza, poi tocca Punta.
+Porta il punto nel cerchio. Il segnale scatta entro 3° dalla direzione
+richiesta. È la soglia del mirino, non la precisione del telefono.
+
+Per azimut geografici, verifica il nord del sensore rispetto a una
+direzione nota. Se serve, apri Riferimento del nord e inserisci
+la correzione. Esempio: 90° noti e 87° letti danno +3°.
+Il GPS indica la quota quando il dispositivo la fornisce.
+La pagina è utilizzabile offline dopo il primo caricamento completo.
