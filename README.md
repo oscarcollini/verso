@@ -1,0 +1,2 @@
+# verso
+Compass/clinometer
