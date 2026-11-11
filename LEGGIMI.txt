@@ -1,4 +1,4 @@
-verso · prova 0.2
+verso · prova 0.3
 
 Pubblica i file estratti nella cartella servita da GitHub Pages.
 Apri l'indirizzo HTTPS in Chrome su Android e tocca Attiva sensori.
