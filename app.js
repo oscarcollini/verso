@@ -7,6 +7,24 @@ const signed = degrees => wrap(degrees + 180) - 180;
 const tolerance = 3;
 const cardinal = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
 
+const compassScale = byId('compass-scale');
+const degreesPerWidth = 120;
+for (let degrees = -60; degrees <= 420; degrees += 5) {
+  const tick = document.createElement('div');
+  tick.className = 'compass-tick';
+  tick.style.left = `${50 + 100 * degrees / degreesPerWidth}%`;
+  const bearing = wrap(degrees);
+  const isCardinal = bearing % 45 === 0;
+  if (isCardinal || bearing % 15 === 0) {
+    tick.classList.add('major');
+    const label = document.createElement('span');
+    label.textContent = isCardinal ? cardinal[bearing / 45] : bearing;
+    if (isCardinal) label.className = bearing === 0 ? 'cardinal north' : 'cardinal';
+    tick.append(label);
+  }
+  compassScale.append(tick);
+}
+
 let current = null;
 let frozen = null;
 let target = null;
@@ -16,14 +34,6 @@ let audio;
 let aligned = false;
 let installPrompt;
 let coordinates = '';
-let correction = 0;
-
-try {
-  correction = Number(localStorage.getItem('azimuth-offset')) || 0;
-} catch {
-  // The correction remains available for the current session.
-}
-byId('offset').value = correction;
 
 function readOrientation(event) {
   const hasHeading = (event.absolute === true || event.type === 'deviceorientationabsolute')
@@ -40,9 +50,9 @@ function readOrientation(event) {
   // At the poles azimuth is undefined. The device's right axis still orients the reticle.
   const bearing = horizontal < 1e-6 ? Math.atan2(-Math.sin(beta) * Math.sin(gamma), Math.cos(gamma))
     : Math.atan2(x, y);
-  const rawAzimuth = hasHeading ? wrap(bearing / radians - event.alpha) : null;
+  const heading = hasHeading ? wrap(bearing / radians - event.alpha) : null;
   absoluteSeen ||= hasHeading;
-  current = { rawAzimuth, altitude: Math.atan2(up, horizontal) / radians };
+  current = { heading, altitude: Math.atan2(up, horizontal) / radians };
   clearTimeout(sensorTimeout);
   byId('start').hidden = true;
   byId('hold').disabled = false;
@@ -52,17 +62,17 @@ function readOrientation(event) {
 function render() {
   const reading = frozen || current;
   if (!reading) return;
-  const heading = reading.rawAzimuth === null ? null : wrap(reading.rawAzimuth + correction);
+  const heading = reading.heading;
   const azimuth = Math.abs(reading.altitude) > 89.99 ? null : heading;
   byId('azimuth').textContent = azimuth === null ? '—' : `${wrap(Math.round(azimuth))}° ${cardinal[Math.round(azimuth / 45) % 8]}`;
   byId('altitude').textContent = `${Math.round(reading.altitude) > 0 ? '+' : ''}${Math.round(reading.altitude)}°`;
-  byId('rose').style.transform = `rotate(${-(azimuth ?? 0)}deg)`;
-  byId('raw-heading').textContent = `Lettura del sensore: ${azimuth === null ? '—' : wrap(Math.round(reading.rawAzimuth)) + '°'}`;
+  compassScale.hidden = azimuth === null;
+  if (azimuth !== null) compassScale.style.transform = `translateX(${-100 * azimuth / degreesPerWidth}%)`;
   const status = frozen
     ? 'Lettura fissata'
     : azimuth === null
       ? (heading === null ? 'Azimut non disponibile' : 'Mira verticale · azimut indefinito')
-      : correction ? 'Azimut corretto · punta come per scattare una foto' : 'Nord del sensore · punta come per scattare una foto';
+      : 'Nord del sensore · punta come per scattare una foto';
   if (byId('sensor-status').textContent !== status) byId('sensor-status').textContent = status;
   if (target) renderTarget(heading, reading.altitude);
 }
@@ -175,22 +185,6 @@ byId('target-form').addEventListener('submit', event => {
   byId('dot').hidden = true;
   setAligned(false);
   freeze(null);
-});
-
-byId('offset').addEventListener('change', event => {
-  const input = event.target;
-  if (!input.validity.valid) {
-    input.reportValidity();
-    input.value = correction;
-    return;
-  }
-  correction = Number(input.value);
-  try {
-    localStorage.setItem('azimuth-offset', String(correction));
-  } catch {
-    // Keep the new value in memory when storage is unavailable.
-  }
-  render();
 });
 
 byId('locate').addEventListener('click', () => {

@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#111b22">
 <title>verso</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon-192.png?v=3">
-<link rel="apple-touch-icon" href="icon-192.png?v=3">
+<link rel="icon" href="icon-192.png?v=5">
+<link rel="apple-touch-icon" href="icon-192.png?v=5">
 <link rel="stylesheet" href="style.css">
 <script src="app.js" defer></script>
 </head>
@@ -20,12 +20,8 @@
   <p id="install-help" hidden>In Chrome apri ⋮ e scegli «Aggiungi a schermata Home» o «Installa app».</p>
 
   <section class="instrument" aria-label="Bussola e clinometro">
-    <div class="dial" aria-hidden="true">
-      <div class="needle"></div>
-      <div class="rose" id="rose">
-        <span class="north">N</span><span class="east">E</span>
-        <span class="south">S</span><span class="west">O</span>
-      </div>
+    <div class="compass" id="compass" aria-hidden="true">
+      <div class="compass-scale" id="compass-scale" hidden></div>
     </div>
     <dl class="readings">
       <div><dt>Azimut</dt><dd id="azimuth">—</dd></div>
@@ -56,13 +52,7 @@
     <button id="locate" type="button">Rileva</button>
     <button id="copy" type="button" hidden>Copia</button>
   </section>
-  <details>
-    <summary>Riferimento del nord</summary>
-    <p>Per puntare coordinate astronomiche, usa il nord geografico. Se conosci l’azimut geografico di un punto visibile, puntalo e imposta la differenza tra il valore noto e quello indicato dal sensore.</p>
-    <label class="correction">Correzione azimut °<input id="offset" type="number" inputmode="decimal" min="-180" max="180" step="any" value="0"></label>
-    <p id="raw-heading">Lettura del sensore: —</p>
-  </details>
-  <footer>verso v0.3 · Oscar Collini fecit · <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" rel="license noopener">CC BY-SA 4.0</a></footer>
+  <footer>verso v0.5 · Oscar Collini fecit · <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" rel="license noopener">CC BY-SA 4.0</a></footer>
 </main>
 </body>
 </html>
