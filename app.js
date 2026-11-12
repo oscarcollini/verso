@@ -5,7 +5,7 @@ const radians = Math.PI / 180;
 const wrap = degrees => ((degrees % 360) + 360) % 360;
 const signed = degrees => wrap(degrees + 180) - 180;
 const tolerance = 3;
-const cardinal = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
+const cardinal = ['N', 'NE', 'E', 'SE', 'S', appLocale.text('SO'), appLocale.text('O'), appLocale.text('NO')];
 
 const compassScale = byId('compass-scale');
 const degreesPerWidth = 120;
@@ -69,10 +69,10 @@ function render() {
   compassScale.hidden = azimuth === null;
   if (azimuth !== null) compassScale.style.transform = `translateX(${-100 * azimuth / degreesPerWidth}%)`;
   const status = frozen
-    ? 'Lettura fissata'
+    ? appLocale.text('Lettura fissata')
     : azimuth === null
-      ? (heading === null ? 'Azimut non disponibile' : 'Mira verticale · azimut indefinito')
-      : 'Nord del sensore · punta come per scattare una foto';
+      ? (heading === null ? appLocale.text('Azimut non disponibile') : appLocale.text('Mira verticale · azimut indefinito'))
+      : appLocale.text('Nord del sensore · punta come per scattare una foto');
   if (byId('sensor-status').textContent !== status) byId('sensor-status').textContent = status;
   if (target) renderTarget(heading, reading.altitude);
 }
@@ -82,7 +82,7 @@ function renderTarget(azimuth, altitude) {
   dot.hidden = azimuth === null;
   if (azimuth === null) {
     setAligned(false);
-    byId('direction').textContent = 'In attesa dell’azimut';
+    byId('direction').textContent = appLocale.text('In attesa dell’azimut');
     return;
   }
 
@@ -102,14 +102,14 @@ function renderTarget(azimuth, altitude) {
 
   const onTarget = angle <= (aligned ? tolerance + 0.7 : tolerance);
   setAligned(onTarget);
-  byId('direction').textContent = onTarget ? 'In mira' : `Distanza dal bersaglio: ${Math.round(angle)}°`;
+  byId('direction').textContent = onTarget ? appLocale.text('In mira') : appLocale.text("Distanza dal bersaglio: {0}°", Math.round(angle));
 }
 
 function setAligned(value) {
   if (value === aligned) return;
   aligned = value;
   byId('reticle').toggleAttribute('data-aligned', value);
-  byId('target-status').textContent = value ? 'Bersaglio in mira' : '';
+  byId('target-status').textContent = value ? appLocale.text('Bersaglio in mira') : '';
   if (value && !frozen && audio?.state === 'running') beep();
 }
 
@@ -129,29 +129,29 @@ function beep() {
 byId('start').addEventListener('click', async () => {
   const orientation = window.DeviceOrientationEvent;
   if (!window.isSecureContext || !orientation) {
-    byId('sensor-status').textContent = 'Apri la pagina HTTPS in un browser con accesso ai sensori.';
+    byId('sensor-status').textContent = appLocale.text('Apri la pagina HTTPS in un browser con accesso ai sensori.');
     return;
   }
   try {
     if (typeof orientation.requestPermission === 'function' && await orientation.requestPermission(true) !== 'granted') {
-      byId('sensor-status').textContent = 'Accesso ai sensori negato.';
+      byId('sensor-status').textContent = appLocale.text('Accesso ai sensori negato.');
       return;
     }
     window.addEventListener('deviceorientationabsolute', readOrientation);
     window.addEventListener('deviceorientation', readOrientation);
-    byId('sensor-status').textContent = 'In attesa dei sensori…';
+    byId('sensor-status').textContent = appLocale.text('In attesa dei sensori…');
     clearTimeout(sensorTimeout);
     sensorTimeout = setTimeout(() => {
-      byId('sensor-status').textContent = 'Nessuna lettura. Controlla il permesso «Sensori di movimento» nel browser.';
+      byId('sensor-status').textContent = appLocale.text('Nessuna lettura. Controlla il permesso «Sensori di movimento» nel browser.');
     }, 4000);
   } catch {
-    byId('sensor-status').textContent = 'Impossibile attivare i sensori.';
+    byId('sensor-status').textContent = appLocale.text('Impossibile attivare i sensori.');
   }
 });
 
 function freeze(reading) {
   frozen = reading;
-  byId('hold').textContent = reading ? 'Riprendi' : 'Fissa';
+  byId('hold').textContent = reading ? appLocale.text('Riprendi') : appLocale.text('Fissa');
   render();
 }
 
@@ -159,7 +159,7 @@ byId('hold').addEventListener('click', () => freeze(frozen ? null : current));
 byId('toggle-target').addEventListener('click', () => {
   const panel = byId('target');
   panel.hidden = !panel.hidden;
-  byId('toggle-target').textContent = panel.hidden ? 'Cerca' : 'Chiudi ricerca';
+  byId('toggle-target').textContent = panel.hidden ? appLocale.text('Cerca') : appLocale.text('Chiudi ricerca');
   byId('toggle-target').setAttribute('aria-expanded', String(!panel.hidden));
   if (panel.hidden) {
     target = null;
@@ -181,7 +181,7 @@ byId('target-form').addEventListener('submit', event => {
   }
   target = { azimuth: wrap(byId('target-az').valueAsNumber), altitude: byId('target-alt').valueAsNumber };
   byId('guidance').hidden = false;
-  byId('direction').textContent = 'Attiva i sensori per puntare';
+  byId('direction').textContent = appLocale.text('Attiva i sensori per puntare');
   byId('dot').hidden = true;
   setAligned(false);
   freeze(null);
@@ -190,23 +190,23 @@ byId('target-form').addEventListener('submit', event => {
 byId('locate').addEventListener('click', () => {
   const status = byId('location-status');
   if (!navigator.geolocation) {
-    status.textContent = 'Posizione non disponibile';
+    status.textContent = appLocale.text('Posizione non disponibile');
     return;
   }
   byId('locate').disabled = true;
   byId('copy').hidden = true;
-  status.textContent = 'Ricerca della posizione…';
+  status.textContent = appLocale.text('Ricerca della posizione…');
   navigator.geolocation.getCurrentPosition(({ coords }) => {
     const { latitude, longitude, altitude, accuracy } = coords;
     const position = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
     const height = Number.isFinite(altitude) ? ` · ${Math.round(altitude)} m` : '';
     coordinates = position + height;
     status.textContent = `${coordinates} · ±${Math.round(accuracy)} m GPS`;
-    byId('copy').textContent = 'Copia';
+    byId('copy').textContent = appLocale.text('Copia');
     byId('copy').hidden = !navigator.clipboard;
     byId('locate').disabled = false;
   }, error => {
-    status.textContent = error.code === 1 ? 'Accesso alla posizione negato' : 'Posizione non disponibile. Riprova.';
+    status.textContent = error.code === 1 ? appLocale.text('Accesso alla posizione negato') : appLocale.text('Posizione non disponibile. Riprova.');
     byId('locate').disabled = false;
   }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
 });
@@ -214,9 +214,9 @@ byId('locate').addEventListener('click', () => {
 byId('copy').addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(coordinates);
-    byId('copy').textContent = 'Copiato';
+    byId('copy').textContent = appLocale.text('Copiato');
   } catch {
-    byId('copy').textContent = 'Riprova';
+    byId('copy').textContent = appLocale.text('Riprova');
   }
 });
 
