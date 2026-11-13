@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.webmanifest?v=15">
 <link rel="icon" href="icon-192.png?v=15">
 <link rel="apple-touch-icon" href="icon-192.png?v=15">
-<link rel="stylesheet" href="style.css?v=15">
+<link rel="stylesheet" href="style.css?v=15-rotation">
 
 </head>
 <body>
@@ -16,9 +16,14 @@
   <div class="aim">
     <header>
       <h1><img src="icon-192.png?v=15" alt="" width="48" height="48">verso</h1>
-      <button id="install" type="button">Installa</button>
+      <div class="header-actions">
+        <button id="rotate" type="button" hidden>Orizzontale</button>
+        <button id="install" type="button">Installa</button>
+      </div>
     </header>
     <p id="install-help" hidden>In Chrome apri ⋮ e scegli «Aggiungi a schermata Home» o «Installa app».</p>
+
+    <p id="rotation-status" role="status" hidden></p>
 
     <section class="viewfinder" aria-label="Finestra di mira">
       <div class="camera-window">
@@ -70,7 +75,7 @@
   </div>
   <footer>verso v0.15 · Oscar Collini fecit · <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" rel="license noopener">CC BY-SA 4.0</a></footer>
 </main>
-<script src="locale.js?v=15"></script>
-<script src="app.js?v=15"></script>
+<script src="locale.js?v=15-rotation"></script>
+<script src="app.js?v=15-rotation"></script>
 </body>
 </html>

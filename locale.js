@@ -2,6 +2,9 @@
 
 globalThis.appLocale = (() => {
   const english = {
+    "Orizzontale": "Landscape",
+    "Verticale": "Portrait",
+    "Rotazione non disponibile. Controlla la rotazione automatica di Android.": "Couldn’t rotate. Check Android’s auto-rotate setting.",
     "Cerca": "Search",
     "Finestra di mira": "Viewfinder",
     "Attiva fotocamera": "Enable camera",

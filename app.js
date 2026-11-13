@@ -135,8 +135,62 @@ function render() {
   if (target) renderTarget(reading);
 }
 
-if (screen.orientation?.addEventListener) screen.orientation.addEventListener('change', render);
-else window.addEventListener('orientationchange', render);
+const displayOrientation = screen.orientation;
+const rotateButton = byId('rotate');
+const rotationStatus = byId('rotation-status');
+let rotationFullscreen = false;
+
+function isLandscape() {
+  return displayOrientation?.type?.startsWith('landscape') ?? matchMedia('(orientation: landscape)').matches;
+}
+
+function updateDisplayOrientation() {
+  rotateButton.textContent = appLocale.text(isLandscape() ? 'Verticale' : 'Orizzontale');
+  render();
+}
+
+if (displayOrientation?.addEventListener) displayOrientation.addEventListener('change', updateDisplayOrientation);
+else window.addEventListener('orientationchange', updateDisplayOrientation);
+
+if (typeof displayOrientation?.lock === 'function') {
+  rotateButton.hidden = false;
+  updateDisplayOrientation();
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) rotationFullscreen = false;
+});
+
+rotateButton.addEventListener('click', async () => {
+  const landscape = !isLandscape();
+  const mode = landscape ? 'landscape' : 'portrait';
+  rotateButton.disabled = true;
+  rotationStatus.hidden = true;
+  try {
+    if (!landscape && rotationFullscreen && document.fullscreenElement) {
+      await displayOrientation.lock(mode);
+      await document.exitFullscreen();
+    } else {
+      try {
+        await displayOrientation.lock(mode);
+      } catch (error) {
+        if (document.fullscreenElement || !document.fullscreenEnabled) throw error;
+        await document.documentElement.requestFullscreen();
+        rotationFullscreen = true;
+        await displayOrientation.lock(mode);
+      }
+    }
+  } catch {
+    if (rotationFullscreen && document.fullscreenElement) {
+      await document.exitFullscreen().catch(() => {});
+    }
+    rotationStatus.textContent = appLocale.text('Rotazione non disponibile. Controlla la rotazione automatica di Android.');
+    rotationStatus.hidden = false;
+  } finally {
+    rotateButton.disabled = false;
+    updateDisplayOrientation();
+  }
+});
 
 function renderTarget({ heading, alpha, beta, gamma }) {
   const dot = byId('dot');

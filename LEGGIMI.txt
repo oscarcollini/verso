@@ -13,6 +13,8 @@ Puoi anche usare il menu di Chrome.
 Tieni lo schermo verso di te e punta il retro del telefono.
 Puoi usare verso in verticale o in orizzontale, per esempio sul
 treppiede. In orizzontale il mirino è a sinistra e i comandi a destra.
+Il tasto Orizzontale in alto forza la rotazione. Verticale la ripristina.
+In Chrome il comando può attivare lo schermo intero.
 L’inclinazione
 è 0° all’orizzonte, con valori positivi verso il cielo e
 negativi verso terra. Attiva fotocamera mostra la vista posteriore nella
