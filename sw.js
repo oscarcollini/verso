@@ -1,11 +1,13 @@
 'use strict';
 
 const prefix = 'strumenti-shell-' + self.registration.scope + ':';
-const cacheName = prefix + 'v0.12';
-const assets = ['./locale.js?v=12', './manifest-en.webmanifest?v=12', './', './index.html', './style.css?v=12', './app.js?v=12', './manifest.webmanifest?v=12', './icon-192.png?v=12', './icon-512.png?v=12'];
+const cacheName = prefix + 'v0.13';
+const assets = ['./locale.js?v=13', './manifest-en.webmanifest?v=13', './', './index.html', './style.css?v=13', './app.js?v=13', './manifest.webmanifest?v=13', './icon-192.png?v=13', './icon-512.png?v=13'];
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(cacheName).then(cache => cache.addAll(assets)).then(() => self.skipWaiting()));
+  event.waitUntil(caches.open(cacheName).then(cache => cache.addAll(assets.map(path =>
+    new Request(new URL(path, self.registration.scope), { cache: 'reload' })
+  ))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', event => {

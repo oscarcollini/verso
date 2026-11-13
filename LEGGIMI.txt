@@ -1,6 +1,11 @@
-verso · 0.12
+verso · 0.13 · prova zoom
 
-Pubblica i file estratti nella cartella servita da GitHub Pages.
+Pubblica i file estratti nella stessa cartella GitHub Pages della prova,
+sostituendo i file precedenti. Serve un indirizzo HTTPS.
+Per il primo passaggio dalla versione precedente, apri la pagina online.
+Se il colophon resta alla vecchia versione, chiudi la pagina e riaprila
+una seconda volta. Dalla 0.13, quando si attiva una nuova versione, la
+pagina si ricarica automaticamente. L'app funziona anche offline.
 Apri l'indirizzo HTTPS in Chrome su Android e tocca Attiva sensori.
 Il comando Installa apre la richiesta di installazione quando disponibile.
 Puoi anche usare il menu di Chrome.
@@ -8,7 +13,8 @@ Puoi anche usare il menu di Chrome.
 Tieni il telefono in piedi, con lo schermo verso di te. L’inclinazione
 è 0° all’orizzonte, con valori positivi verso il cielo e
 negativi verso terra. Attiva fotocamera mostra la vista posteriore nella
-finestra tonda in alto, con ingrandimento 1,6×. Il video è solo un’anteprima locale. La fotocamera
+finestra tonda in alto. I tasti 1×, 1,6× e 2× cambiano il ritaglio
+della stessa ripresa per confrontare la scena a telefono fermo. Il video è solo un’anteprima locale. La fotocamera
 si spegne quando l’app passa in secondo piano.
 In Misura un bordo giallo incornicia la pagina. Inquadra il punto con
 la croce al centro della finestra.

@@ -38,6 +38,15 @@ let coordinates = '';
 const cameraVideo = byId('camera-video');
 const cameraButton = byId('camera-toggle');
 const cameraStatus = byId('camera-status');
+const zoomOptions = document.querySelector('.zoom-options');
+const zoomButtons = [...zoomOptions.querySelectorAll('button')];
+for (const button of zoomButtons) {
+  button.textContent = new Intl.NumberFormat(appLocale.locale).format(Number(button.dataset.zoom)) + '×';
+  button.addEventListener('click', () => {
+    cameraVideo.style.setProperty('--camera-zoom', button.dataset.zoom);
+    for (const option of zoomButtons) option.setAttribute('aria-pressed', String(option === button));
+  });
+}
 let cameraRequest = 0;
 let cameraStream = null;
 
@@ -45,6 +54,7 @@ function stopCamera() {
   cameraRequest++;
   cameraStream?.getTracks().forEach(track => track.stop());
   cameraStream = null;
+  zoomOptions.hidden = true;
   cameraVideo.srcObject = null;
   cameraButton.textContent = appLocale.text('Attiva fotocamera');
   cameraButton.disabled = false;
@@ -71,6 +81,7 @@ cameraButton.addEventListener('click', async () => {
     cameraVideo.srcObject = stream;
     await cameraVideo.play();
     if (request !== cameraRequest) return;
+    zoomOptions.hidden = false;
     cameraButton.textContent = appLocale.text('Spegni fotocamera');
   } catch (error) {
     if (request !== cameraRequest) return;
@@ -297,4 +308,26 @@ installButton.addEventListener('click', async () => {
   }
 });
 
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(console.error);
+if ('serviceWorker' in navigator) {
+  const workers = navigator.serviceWorker;
+  let controller = workers.controller;
+  let reloading = false;
+  workers.addEventListener('controllerchange', () => {
+    const next = workers.controller;
+    if (!next || next === controller) return;
+    if (controller && !reloading) {
+      reloading = true;
+      location.reload();
+    }
+    controller = next;
+  });
+
+  workers.register('./sw.js', { updateViaCache: 'none' }).then(registration => {
+    const checkForUpdate = () => {
+      if (navigator.onLine && !document.hidden) registration.update().catch(() => {});
+    };
+    checkForUpdate();
+    document.addEventListener('visibilitychange', checkForUpdate);
+    window.addEventListener('online', checkForUpdate);
+  }).catch(console.error);
+}
