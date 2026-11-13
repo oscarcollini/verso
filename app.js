@@ -38,6 +38,11 @@ const cameraVideo = byId('camera-video');
 const cameraButton = byId('camera-toggle');
 const cameraStatus = byId('camera-status');
 const fieldButton = byId('zoom-toggle');
+const nightButton = byId('night-toggle');
+nightButton.addEventListener('click', () => {
+  const active = cameraVideo.toggleAttribute('data-night');
+  nightButton.setAttribute('aria-pressed', String(active));
+});
 const fields = [
   { label: 'Stretto', description: 'Campo stretto', screenShare: 1 },
   { label: 'Medio', description: 'Campo medio', screenShare: 0.5 },
@@ -53,12 +58,30 @@ fieldButton.addEventListener('click', () => {
 });
 let cameraRequest = 0;
 let cameraStream = null;
+let screenLock = null;
+
+async function keepScreenOn(request) {
+  if (!navigator.wakeLock || document.hidden) return;
+  try {
+    const lock = await navigator.wakeLock.request('screen');
+    if (request === cameraRequest && !document.hidden) screenLock = lock;
+    else await lock.release();
+  } catch {
+    // Camera use is still available if the browser declines the wake lock.
+  }
+}
 
 function stopCamera() {
   cameraRequest++;
+  const lock = screenLock;
+  screenLock = null;
+  lock?.release().catch(() => {});
   cameraStream?.getTracks().forEach(track => track.stop());
   cameraStream = null;
   fieldButton.hidden = true;
+  nightButton.hidden = true;
+  nightButton.setAttribute('aria-pressed', 'false');
+  cameraVideo.removeAttribute('data-night');
   cameraVideo.srcObject = null;
   cameraButton.textContent = appLocale.text('Attiva fotocamera');
   cameraButton.disabled = false;
@@ -86,7 +109,9 @@ cameraButton.addEventListener('click', async () => {
     await cameraVideo.play();
     if (request !== cameraRequest) return;
     fieldButton.hidden = false;
+    nightButton.hidden = false;
     cameraButton.textContent = appLocale.text('Spegni fotocamera');
+    void keepScreenOn(request);
   } catch (error) {
     if (request !== cameraRequest) return;
     stopCamera();

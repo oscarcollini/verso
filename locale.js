@@ -2,6 +2,7 @@
 
 globalThis.appLocale = (() => {
   const english = {
+    "Notte": "Night",
     "Stretto": "Narrow",
     "Medio": "Medium",
     "Ampio": "Wide",

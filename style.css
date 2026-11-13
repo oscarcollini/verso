@@ -113,8 +113,11 @@ body:has(#toggle-target[aria-expanded="false"])::after {
   pointer-events: none;
 }
 
-.camera-controls { display: flex; justify-content: center; align-items: center; gap: 8px; }
+.camera-controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
 #zoom-toggle { min-width: 70px; padding-inline: 8px; font-size: .8rem; }
+#night-toggle { padding-inline: 8px; font-size: .8rem; }
+#night-toggle[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+#camera-video[data-night] { filter: brightness(3); }
 
 @media (orientation: landscape) and (min-width: 540px) {
   main {

@@ -23,6 +23,9 @@ mostrata a tutto schermo dietro al mirino. Medio e Ampio rimpiccioliscono
 la ripresa e allargano il campo, mantenendo il centro della mira.
 Il video è solo un’anteprima locale. La fotocamera
 si spegne quando l’app passa in secondo piano.
+Notte schiarisce solo l’anteprima e si disattiva spegnendo la fotocamera.
+Se il browser lo consente, lo schermo resta acceso durante l’uso della
+fotocamera, alla luminosità impostata sul telefono.
 In Misura un bordo giallo incornicia la pagina. Inquadra il punto con
 la croce al centro della finestra.
 Blocca ferma le due letture. Riprendi torna alle letture dal vivo.
