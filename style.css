@@ -58,17 +58,15 @@ dd { margin: 0; font-size: clamp(1.9rem, 9vw, 2.7rem); font-variant-numeric: tab
 form { align-items: end; }
 label { min-width: 0; flex: 1; font-size: .82rem; }
 input { width: 100%; padding: 5px 8px; display: block; margin-top: 3px; font-size: 1rem; }
-.viewfinder {
+.viewfinder { display: grid; justify-items: center; gap: 8px; margin-bottom: 12px; }
+.camera-window {
   position: relative; overflow: hidden; isolation: isolate;
-  aspect-ratio: 16 / 10; max-height: 32svh; margin-bottom: 10px;
-  border: 1px solid var(--border); border-radius: 16px; background: #111b22;
+  width: min(100%, 210px, max(124px, 30svh)); aspect-ratio: 1;
+  border: 1px solid var(--border); border-radius: 50%; background: #111b22;
 }
 #camera-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-#camera-toggle { position: absolute; inset: 8px 8px auto auto; background: #111b22e8; font-size: .8rem; }
-#camera-status {
-  position: absolute; inset: auto 0 0; margin: 0; padding: 5px 8px;
-  background: #111b22e8; color: #f1f3ed; text-align: center; font-size: .8rem;
-}
+#camera-toggle { font-size: .8rem; }
+#camera-status { margin: 0; text-align: center; font-size: .8rem; }
 .crosshair, .reticle { position: absolute; inset: 50% auto auto 50%; translate: -50% -50%; pointer-events: none; }
 .crosshair { width: 24px; height: 24px; }
 .crosshair::before, .crosshair::after {
