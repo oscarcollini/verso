@@ -38,10 +38,13 @@ const cameraVideo = byId('camera-video');
 const cameraButton = byId('camera-toggle');
 const cameraStatus = byId('camera-status');
 const zoomButton = byId('zoom-toggle');
+let zoom = 1;
 zoomButton.addEventListener('click', () => {
-  const enabled = zoomButton.getAttribute('aria-pressed') !== 'true';
-  zoomButton.setAttribute('aria-pressed', String(enabled));
-  cameraVideo.classList.toggle('zoomed', enabled);
+  zoom = zoom === 3 ? 1 : zoom + 1;
+  zoomButton.textContent = `${zoom}×`;
+  zoomButton.setAttribute('aria-label', `Zoom ${zoom}×`);
+  zoomButton.toggleAttribute('data-enlarged', zoom > 1);
+  cameraVideo.style.setProperty('--camera-zoom', zoom);
 });
 let cameraRequest = 0;
 let cameraStream = null;

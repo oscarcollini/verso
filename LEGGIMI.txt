@@ -18,8 +18,8 @@ In Chrome il comando può attivare lo schermo intero.
 L’inclinazione
 è 0° all’orizzonte, con valori positivi verso il cielo e
 negativi verso terra. Attiva fotocamera mostra la vista posteriore nella
-finestra tonda. Il tasto 2× alterna la vista normale e
-il ritaglio ingrandito della stessa ripresa. Il video è solo un’anteprima locale. La fotocamera
+finestra tonda. Il tasto dello zoom passa da 1× a 2× a 3× e poi torna
+a 1×. Il ritaglio ingrandisce la stessa ripresa. Il video è solo un’anteprima locale. La fotocamera
 si spegne quando l’app passa in secondo piano.
 In Misura un bordo giallo incornicia la pagina. Inquadra il punto con
 la croce al centro della finestra.
