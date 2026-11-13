@@ -64,7 +64,7 @@ globalThis.appLocale = (() => {
 
   document.documentElement.lang = language;
   if (language === 'en') {
-    document.querySelector('link[rel="manifest"]').href = "manifest-en.webmanifest?v=12";
+    document.querySelector('link[rel="manifest"]').href = "manifest-en.webmanifest?v=11";
     const walker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT);
     for (let node = walker.nextNode(); node; node = walker.nextNode()) {
       if (node.parentElement.closest('script, style')) continue;
