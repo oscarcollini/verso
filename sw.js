@@ -1,7 +1,7 @@
 'use strict';
 
 const prefix = 'strumenti-shell-' + self.registration.scope + ':';
-const cacheName = prefix + 'v0.10';
+const cacheName = prefix + 'v0.10-header-icon';
 const assets = ['./locale.js?v=10', './manifest-en.webmanifest?v=10', './', './index.html', './style.css?v=10', './app.js?v=10', './manifest.webmanifest?v=10', './icon-192.png?v=10', './icon-512.png?v=10'];
 
 self.addEventListener('install', event => {
