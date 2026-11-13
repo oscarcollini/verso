@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111b22">
 <title>verso</title>
-<link rel="manifest" href="manifest.webmanifest?v=06">
+<link rel="manifest" href="manifest.webmanifest?v=07">
 <link rel="icon" href="icon-192.png?v=5">
 <link rel="apple-touch-icon" href="icon-192.png?v=5">
-<link rel="stylesheet" href="style.css?v=06">
+<link rel="stylesheet" href="style.css?v=07">
 
 </head>
 <body>
@@ -18,6 +18,14 @@
     <button id="install" type="button">Installa</button>
   </header>
   <p id="install-help" hidden>In Chrome apri ⋮ e scegli «Aggiungi a schermata Home» o «Installa app».</p>
+
+  <section class="viewfinder" aria-label="Finestra di mira">
+    <video id="camera-video" autoplay muted playsinline aria-hidden="true"></video>
+    <div class="crosshair" id="crosshair" aria-hidden="true"></div>
+    <div class="reticle" id="reticle" aria-hidden="true" hidden><i></i><b id="dot" hidden></b></div>
+    <button id="camera-toggle" type="button">Attiva fotocamera</button>
+    <p id="camera-status" role="status" hidden></p>
+  </section>
 
   <section class="instrument" aria-label="Bussola e clinometro">
     <div class="compass" id="compass" aria-hidden="true">
@@ -40,7 +48,6 @@
         <button class="primary" type="submit">Punta</button>
       </form>
       <div id="guidance" hidden>
-        <div class="reticle" id="reticle" aria-hidden="true"><i></i><b id="dot"></b></div>
         <p class="direction" id="direction"></p>
         <p class="sr-only" id="target-status" role="status"></p>
       </div>
@@ -52,9 +59,9 @@
     <button id="locate" type="button">Rileva</button>
     <button id="copy" type="button" hidden>Copia</button>
   </section>
-  <footer>verso v0.6 · Oscar Collini fecit · <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" rel="license noopener">CC BY-SA 4.0</a></footer>
+  <footer>verso v0.7 · Oscar Collini fecit · <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" rel="license noopener">CC BY-SA 4.0</a></footer>
 </main>
-<script src="locale.js?v=06"></script>
-<script src="app.js?v=06"></script>
+<script src="locale.js?v=07"></script>
+<script src="app.js?v=07"></script>
 </body>
 </html>

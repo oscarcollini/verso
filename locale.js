@@ -3,6 +3,11 @@
 globalThis.appLocale = (() => {
   const english = {
     "Cerca": "Search",
+    "Finestra di mira": "Viewfinder",
+    "Attiva fotocamera": "Enable camera",
+    "Spegni fotocamera": "Turn camera off",
+    "Fotocamera non disponibile.": "Camera unavailable.",
+    "Accesso alla fotocamera negato.": "Camera access denied.",
     "Chiudi": "Close",
     "Installa": "Install",
     "Installa app": "Install app",
@@ -60,7 +65,7 @@ globalThis.appLocale = (() => {
 
   document.documentElement.lang = language;
   if (language === 'en') {
-    document.querySelector('link[rel="manifest"]').href = "manifest-en.webmanifest?v=06";
+    document.querySelector('link[rel="manifest"]').href = "manifest-en.webmanifest?v=07";
     const walker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT);
     for (let node = walker.nextNode(); node; node = walker.nextNode()) {
       if (node.parentElement.closest('script, style')) continue;

@@ -1,4 +1,4 @@
-verso · prova 0.6
+verso · prova 0.7
 
 Pubblica i file estratti nella cartella servita da GitHub Pages.
 Apri l'indirizzo HTTPS in Chrome su Android e tocca Attiva sensori.
@@ -7,11 +7,14 @@ Puoi anche usare il menu di Chrome.
 
 Tieni il telefono in piedi, con lo schermo verso di te. Punta come per
 scattare una foto: 0° all’orizzonte, valori positivi verso il cielo,
-negativi verso terra. L’app usa i sensori di orientamento e lascia
-spenta la fotocamera.
+negativi verso terra. Attiva fotocamera mostra la vista posteriore nella
+finestra in alto. Il video è solo un’anteprima locale. La fotocamera
+si spegne quando l’app passa in secondo piano.
+In Misura inquadra il punto con la croce al centro della finestra.
 Fissa blocca le due letture. Riprendi torna alle letture dal vivo.
 In Cerca inserisci azimut e altezza, poi tocca Punta.
-Porta il punto nel cerchio. Il segnale scatta entro 3° dalla direzione
+Nella stessa finestra porta il pallino guida nel cerchietto. Il pallino
+indica da che parte muovere il telefono. Il segnale scatta entro 3° dalla direzione
 richiesta. È la soglia del mirino, non la precisione del telefono.
 
 Il GPS indica la quota quando il dispositivo la fornisce.

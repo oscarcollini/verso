@@ -35,6 +35,59 @@ let aligned = false;
 let installPrompt;
 let coordinates = '';
 
+const cameraVideo = byId('camera-video');
+const cameraButton = byId('camera-toggle');
+const cameraStatus = byId('camera-status');
+let cameraRequest = 0;
+let cameraStream = null;
+
+function stopCamera() {
+  cameraRequest++;
+  cameraStream?.getTracks().forEach(track => track.stop());
+  cameraStream = null;
+  cameraVideo.srcObject = null;
+  cameraButton.textContent = appLocale.text('Attiva fotocamera');
+  cameraButton.disabled = false;
+}
+
+cameraButton.addEventListener('click', async () => {
+  if (cameraStream) {
+    stopCamera();
+    return;
+  }
+  cameraStatus.hidden = true;
+  cameraButton.disabled = true;
+  const request = ++cameraRequest;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' } },
+      audio: false
+    });
+    if (request !== cameraRequest || document.hidden) {
+      stream.getTracks().forEach(track => track.stop());
+      return;
+    }
+    cameraStream = stream;
+    cameraVideo.srcObject = stream;
+    await cameraVideo.play();
+    if (request !== cameraRequest) return;
+    cameraButton.textContent = appLocale.text('Spegni fotocamera');
+  } catch (error) {
+    if (request !== cameraRequest) return;
+    stopCamera();
+    cameraStatus.textContent = appLocale.text(error.name === 'NotAllowedError'
+      ? 'Accesso alla fotocamera negato.' : 'Fotocamera non disponibile.');
+    cameraStatus.hidden = false;
+  } finally {
+    if (request === cameraRequest) cameraButton.disabled = false;
+  }
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) stopCamera();
+});
+window.addEventListener('pagehide', stopCamera);
+
 function readOrientation(event) {
   const hasHeading = (event.absolute === true || event.type === 'deviceorientationabsolute')
     && Number.isFinite(event.alpha);
@@ -161,9 +214,12 @@ byId('toggle-target').addEventListener('click', () => {
   panel.hidden = !panel.hidden;
   byId('toggle-target').textContent = panel.hidden ? appLocale.text('Cerca') : appLocale.text('Chiudi ricerca');
   byId('toggle-target').setAttribute('aria-expanded', String(!panel.hidden));
+  byId('crosshair').hidden = !panel.hidden;
+  byId('reticle').hidden = panel.hidden;
   if (panel.hidden) {
     target = null;
     setAligned(false);
+    byId('dot').hidden = true;
     byId('guidance').hidden = true;
   }
 });
