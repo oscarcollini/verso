@@ -38,15 +38,12 @@ let coordinates = '';
 const cameraVideo = byId('camera-video');
 const cameraButton = byId('camera-toggle');
 const cameraStatus = byId('camera-status');
-const zoomOptions = document.querySelector('.zoom-options');
-const zoomButtons = [...zoomOptions.querySelectorAll('button')];
-for (const button of zoomButtons) {
-  button.textContent = new Intl.NumberFormat(appLocale.locale).format(Number(button.dataset.zoom)) + '×';
-  button.addEventListener('click', () => {
-    cameraVideo.style.setProperty('--camera-zoom', button.dataset.zoom);
-    for (const option of zoomButtons) option.setAttribute('aria-pressed', String(option === button));
-  });
-}
+const zoomButton = byId('zoom-toggle');
+zoomButton.addEventListener('click', () => {
+  const enabled = zoomButton.getAttribute('aria-pressed') !== 'true';
+  zoomButton.setAttribute('aria-pressed', String(enabled));
+  cameraVideo.classList.toggle('zoomed', enabled);
+});
 let cameraRequest = 0;
 let cameraStream = null;
 
@@ -54,7 +51,7 @@ function stopCamera() {
   cameraRequest++;
   cameraStream?.getTracks().forEach(track => track.stop());
   cameraStream = null;
-  zoomOptions.hidden = true;
+  zoomButton.hidden = true;
   cameraVideo.srcObject = null;
   cameraButton.textContent = appLocale.text('Attiva fotocamera');
   cameraButton.disabled = false;
@@ -81,7 +78,7 @@ cameraButton.addEventListener('click', async () => {
     cameraVideo.srcObject = stream;
     await cameraVideo.play();
     if (request !== cameraRequest) return;
-    zoomOptions.hidden = false;
+    zoomButton.hidden = false;
     cameraButton.textContent = appLocale.text('Spegni fotocamera');
   } catch (error) {
     if (request !== cameraRequest) return;
