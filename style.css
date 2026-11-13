@@ -111,3 +111,22 @@ body:has(#toggle-target[aria-expanded="false"])::after {
   color: #21221e;
   border-color: transparent;
 }
+
+@media (orientation: landscape) and (min-width: 540px) {
+  main {
+    max-width: 960px;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: start;
+    gap: 8px 16px;
+    padding-inline: max(18px, env(safe-area-inset-left)) max(18px, env(safe-area-inset-right));
+  }
+  .camera-window { width: min(100%, 310px, max(140px, 58svh)); }
+  .viewfinder { margin-bottom: 0; }
+  .instrument, .location { padding: 8px 10px; }
+  .compass { height: 50px; margin-bottom: 4px; }
+  dd { font-size: clamp(1.75rem, 7svh, 2.7rem); }
+  #sensor-status { margin-block: 4px 6px; }
+  #target { margin-top: 8px; padding-top: 6px; }
+  footer { grid-column: 1 / -1; margin-top: 0; }
+}

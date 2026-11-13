@@ -1,4 +1,4 @@
-verso · 0.14
+verso · 0.15
 
 Pubblica i file estratti nella cartella GitHub Pages di verso,
 sostituendo i file precedenti. Serve un indirizzo HTTPS.
@@ -10,10 +10,13 @@ Apri l'indirizzo HTTPS in Chrome su Android e tocca Attiva sensori.
 Il comando Installa apre la richiesta di installazione quando disponibile.
 Puoi anche usare il menu di Chrome.
 
-Tieni il telefono in piedi, con lo schermo verso di te. L’inclinazione
+Tieni lo schermo verso di te e punta il retro del telefono.
+Puoi usare verso in verticale o in orizzontale, per esempio sul
+treppiede. In orizzontale il mirino è a sinistra e i comandi a destra.
+L’inclinazione
 è 0° all’orizzonte, con valori positivi verso il cielo e
 negativi verso terra. Attiva fotocamera mostra la vista posteriore nella
-finestra tonda in alto. Il tasto 2× alterna la vista normale e
+finestra tonda. Il tasto 2× alterna la vista normale e
 il ritaglio ingrandito della stessa ripresa. Il video è solo un’anteprima locale. La fotocamera
 si spegne quando l’app passa in secondo piano.
 In Misura un bordo giallo incornicia la pagina. Inquadra il punto con

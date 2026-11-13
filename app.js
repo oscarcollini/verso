@@ -3,7 +3,6 @@
 const byId = id => document.getElementById(id);
 const radians = Math.PI / 180;
 const wrap = degrees => ((degrees % 360) + 360) % 360;
-const signed = degrees => wrap(degrees + 180) - 180;
 const tolerance = 3;
 const cardinal = ['N', 'NE', 'E', 'SE', 'S', appLocale.text('SO'), appLocale.text('O'), appLocale.text('NO')];
 
@@ -108,12 +107,10 @@ function readOrientation(event) {
   const y = Math.sin(beta) * Math.cos(gamma);
   const up = -Math.cos(beta) * Math.cos(gamma);
   const horizontal = Math.hypot(x, y);
-  // At the poles azimuth is undefined. The device's right axis still orients the reticle.
-  const bearing = horizontal < 1e-6 ? Math.atan2(-Math.sin(beta) * Math.sin(gamma), Math.cos(gamma))
-    : Math.atan2(x, y);
+  const bearing = Math.atan2(x, y);
   const heading = hasHeading ? wrap(bearing / radians - event.alpha) : null;
   absoluteSeen ||= hasHeading;
-  current = { heading, altitude: Math.atan2(up, horizontal) / radians };
+  current = { heading, altitude: Math.atan2(up, horizontal) / radians, alpha: event.alpha, beta, gamma };
   clearTimeout(sensorTimeout);
   byId('start').hidden = true;
   byId('hold').disabled = false;
@@ -135,24 +132,36 @@ function render() {
       ? (heading === null ? appLocale.text('Azimut non disponibile') : appLocale.text('Mira verticale · azimut indefinito'))
       : appLocale.text('Nord del sensore');
   if (byId('sensor-status').textContent !== status) byId('sensor-status').textContent = status;
-  if (target) renderTarget(heading, reading.altitude);
+  if (target) renderTarget(reading);
 }
 
-function renderTarget(azimuth, altitude) {
+if (screen.orientation?.addEventListener) screen.orientation.addEventListener('change', render);
+else window.addEventListener('orientationchange', render);
+
+function renderTarget({ heading, alpha, beta, gamma }) {
   const dot = byId('dot');
-  dot.hidden = azimuth === null;
-  if (azimuth === null) {
+  dot.hidden = heading === null;
+  if (heading === null) {
     setAligned(false);
     byId('direction').textContent = appLocale.text('In attesa dell’azimut');
     return;
   }
 
-  const delta = signed(target.azimuth - azimuth) * radians;
-  const pitch = altitude * radians;
+  // Undo the sensor rotations in reverse order to project the target onto the camera axes.
+  const bearing = (target.azimuth + alpha) * radians;
   const goal = target.altitude * radians;
-  const right = Math.cos(goal) * Math.sin(delta);
-  const up = Math.sin(goal) * Math.cos(pitch) - Math.cos(goal) * Math.sin(pitch) * Math.cos(delta);
-  const forward = Math.sin(goal) * Math.sin(pitch) + Math.cos(goal) * Math.cos(pitch) * Math.cos(delta);
+  const east = Math.cos(goal) * Math.sin(bearing);
+  const north = Math.cos(goal) * Math.cos(bearing);
+  const height = Math.sin(goal);
+  const deviceUp = north * Math.cos(beta) + height * Math.sin(beta);
+  const depth = height * Math.cos(beta) - north * Math.sin(beta);
+  const deviceRight = east * Math.cos(gamma) - depth * Math.sin(gamma);
+  const forward = -east * Math.sin(gamma) - depth * Math.cos(gamma);
+
+  // Android reports 90° when the top of the phone points left.
+  const screenAngle = (screen.orientation?.angle ?? window.orientation ?? 0) * radians;
+  const right = deviceRight * Math.cos(screenAngle) - deviceUp * Math.sin(screenAngle);
+  const up = deviceRight * Math.sin(screenAngle) + deviceUp * Math.cos(screenAngle);
   const lateral = Math.hypot(right, up);
   const angle = Math.atan2(lateral, forward) / radians;
   const radius = Math.min(angle * 4, 41);

@@ -1,8 +1,8 @@
 'use strict';
 
 const prefix = 'strumenti-shell-' + self.registration.scope + ':';
-const cacheName = prefix + 'v0.14';
-const assets = ['./locale.js?v=14', './manifest-en.webmanifest?v=14', './', './index.html', './style.css?v=14', './app.js?v=14', './manifest.webmanifest?v=14', './icon-192.png?v=14', './icon-512.png?v=14'];
+const cacheName = prefix + 'v0.15';
+const assets = ['./locale.js?v=15', './manifest-en.webmanifest?v=15', './', './index.html', './style.css?v=15', './app.js?v=15', './manifest.webmanifest?v=15', './icon-192.png?v=15', './icon-512.png?v=15'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(cacheName).then(cache => cache.addAll(assets.map(path =>

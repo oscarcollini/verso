@@ -5,68 +5,72 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111b22">
 <title>verso</title>
-<link rel="manifest" href="manifest.webmanifest?v=14">
-<link rel="icon" href="icon-192.png?v=14">
-<link rel="apple-touch-icon" href="icon-192.png?v=14">
-<link rel="stylesheet" href="style.css?v=14">
+<link rel="manifest" href="manifest.webmanifest?v=15">
+<link rel="icon" href="icon-192.png?v=15">
+<link rel="apple-touch-icon" href="icon-192.png?v=15">
+<link rel="stylesheet" href="style.css?v=15">
 
 </head>
 <body>
 <main>
-  <header>
-    <h1><img src="icon-192.png?v=14" alt="" width="48" height="48">verso</h1>
-    <button id="install" type="button">Installa</button>
-  </header>
-  <p id="install-help" hidden>In Chrome apri ⋮ e scegli «Aggiungi a schermata Home» o «Installa app».</p>
+  <div class="aim">
+    <header>
+      <h1><img src="icon-192.png?v=15" alt="" width="48" height="48">verso</h1>
+      <button id="install" type="button">Installa</button>
+    </header>
+    <p id="install-help" hidden>In Chrome apri ⋮ e scegli «Aggiungi a schermata Home» o «Installa app».</p>
 
-  <section class="viewfinder" aria-label="Finestra di mira">
-    <div class="camera-window">
-      <video id="camera-video" autoplay muted playsinline aria-hidden="true"></video>
-      <div class="crosshair" id="crosshair" aria-hidden="true"></div>
-      <div class="reticle" id="reticle" aria-hidden="true" hidden><i></i><b id="dot" hidden></b></div>
-    </div>
-    <div class="camera-controls">
-      <button id="camera-toggle" type="button">Attiva fotocamera</button>
-      <button id="zoom-toggle" type="button" aria-label="Zoom 2×" aria-pressed="false" hidden>2×</button>
-    </div>
-    <p id="camera-status" role="status" hidden></p>
-  </section>
-
-  <section class="instrument" aria-label="Bussola e clinometro">
-    <div class="compass" id="compass" aria-hidden="true">
-      <div class="compass-scale" id="compass-scale" hidden></div>
-    </div>
-    <dl class="readings">
-      <div><dt>Azimut</dt><dd id="azimuth">—</dd></div>
-      <div><dt>Inclinazione</dt><dd id="altitude">—</dd></div>
-    </dl>
-    <p id="sensor-status" role="status"></p>
-    <button class="primary" id="start" type="button">Attiva sensori</button>
-    <div class="controls">
-      <button id="hold" type="button" disabled>Blocca</button>
-      <button id="toggle-target" type="button" aria-expanded="false" aria-controls="target">Cerca</button>
-    </div>
-    <section id="target" aria-label="Cerca una direzione" hidden>
-      <form id="target-form">
-        <label>Azimut °<input id="target-az" type="number" inputmode="decimal" min="0" max="360" step="any" placeholder="247" required></label>
-        <label>Altezza °<input id="target-alt" type="number" inputmode="decimal" min="-90" max="90" step="any" placeholder="18" required></label>
-        <button class="primary" type="submit">Punta</button>
-      </form>
-      <div id="guidance" hidden>
-        <p class="direction" id="direction"></p>
-        <p class="sr-only" id="target-status" role="status"></p>
+    <section class="viewfinder" aria-label="Finestra di mira">
+      <div class="camera-window">
+        <video id="camera-video" autoplay muted playsinline aria-hidden="true"></video>
+        <div class="crosshair" id="crosshair" aria-hidden="true"></div>
+        <div class="reticle" id="reticle" aria-hidden="true" hidden><i></i><b id="dot" hidden></b></div>
       </div>
+      <div class="camera-controls">
+        <button id="camera-toggle" type="button">Attiva fotocamera</button>
+        <button id="zoom-toggle" type="button" aria-label="Zoom 2×" aria-pressed="false" hidden>2×</button>
+      </div>
+      <p id="camera-status" role="status" hidden></p>
     </section>
-  </section>
+  </div>
 
-  <section class="location" aria-label="GPS">
-    <div><h2>GPS</h2><p id="location-status" role="status">Posizione su richiesta</p></div>
-    <button id="locate" type="button">Rileva</button>
-    <button id="copy" type="button" hidden>Copia</button>
-  </section>
-  <footer>verso v0.14 · Oscar Collini fecit · <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" rel="license noopener">CC BY-SA 4.0</a></footer>
+  <div class="panels">
+    <section class="instrument" aria-label="Bussola e clinometro">
+      <div class="compass" id="compass" aria-hidden="true">
+        <div class="compass-scale" id="compass-scale" hidden></div>
+      </div>
+      <dl class="readings">
+        <div><dt>Azimut</dt><dd id="azimuth">—</dd></div>
+        <div><dt>Inclinazione</dt><dd id="altitude">—</dd></div>
+      </dl>
+      <p id="sensor-status" role="status"></p>
+      <button class="primary" id="start" type="button">Attiva sensori</button>
+      <div class="controls">
+        <button id="hold" type="button" disabled>Blocca</button>
+        <button id="toggle-target" type="button" aria-expanded="false" aria-controls="target">Cerca</button>
+      </div>
+      <section id="target" aria-label="Cerca una direzione" hidden>
+        <form id="target-form">
+          <label>Azimut °<input id="target-az" type="number" inputmode="decimal" min="0" max="360" step="any" placeholder="247" required></label>
+          <label>Altezza °<input id="target-alt" type="number" inputmode="decimal" min="-90" max="90" step="any" placeholder="18" required></label>
+          <button class="primary" type="submit">Punta</button>
+        </form>
+        <div id="guidance" hidden>
+          <p class="direction" id="direction"></p>
+          <p class="sr-only" id="target-status" role="status"></p>
+        </div>
+      </section>
+    </section>
+
+    <section class="location" aria-label="GPS">
+      <div><h2>GPS</h2><p id="location-status" role="status">Posizione su richiesta</p></div>
+      <button id="locate" type="button">Rileva</button>
+      <button id="copy" type="button" hidden>Copia</button>
+    </section>
+  </div>
+  <footer>verso v0.15 · Oscar Collini fecit · <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" rel="license noopener">CC BY-SA 4.0</a></footer>
 </main>
-<script src="locale.js?v=14"></script>
-<script src="app.js?v=14"></script>
+<script src="locale.js?v=15"></script>
+<script src="app.js?v=15"></script>
 </body>
 </html>
