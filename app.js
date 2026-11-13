@@ -122,10 +122,10 @@ function render() {
   compassScale.hidden = azimuth === null;
   if (azimuth !== null) compassScale.style.transform = `translateX(${-100 * azimuth / degreesPerWidth}%)`;
   const status = frozen
-    ? appLocale.text('Lettura fissata')
+    ? appLocale.text('Lettura bloccata')
     : azimuth === null
       ? (heading === null ? appLocale.text('Azimut non disponibile') : appLocale.text('Mira verticale · azimut indefinito'))
-      : appLocale.text('Nord del sensore · punta come per scattare una foto');
+      : appLocale.text('Nord del sensore');
   if (byId('sensor-status').textContent !== status) byId('sensor-status').textContent = status;
   if (target) renderTarget(heading, reading.altitude);
 }
@@ -204,7 +204,7 @@ byId('start').addEventListener('click', async () => {
 
 function freeze(reading) {
   frozen = reading;
-  byId('hold').textContent = reading ? appLocale.text('Riprendi') : appLocale.text('Fissa');
+  byId('hold').textContent = reading ? appLocale.text('Riprendi') : appLocale.text('Blocca');
   render();
 }
 
@@ -212,7 +212,7 @@ byId('hold').addEventListener('click', () => freeze(frozen ? null : current));
 byId('toggle-target').addEventListener('click', () => {
   const panel = byId('target');
   panel.hidden = !panel.hidden;
-  byId('toggle-target').textContent = panel.hidden ? appLocale.text('Cerca') : appLocale.text('Chiudi ricerca');
+  byId('toggle-target').textContent = panel.hidden ? appLocale.text('Cerca') : appLocale.text('Misura');
   byId('toggle-target').setAttribute('aria-expanded', String(!panel.hidden));
   byId('crosshair').hidden = !panel.hidden;
   byId('reticle').hidden = panel.hidden;

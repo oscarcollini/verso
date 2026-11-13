@@ -22,19 +22,18 @@ globalThis.appLocale = (() => {
     "Bussola e clinometro": "Compass and clinometer",
     "Azimut": "Azimuth",
     "Inclinazione": "Tilt",
-    "Punta come per scattare una foto.": "Aim as if you were taking a photo.",
     "Attiva sensori": "Enable sensors",
-    "Fissa": "Hold",
+    "Blocca": "Lock",
     "Cerca una direzione": "Find a direction",
     "Azimut °": "Azimuth °",
     "Altezza °": "Elevation °",
     "Punta": "Aim",
     "Posizione su richiesta": "Location on request",
     "Rileva": "Locate",
-    "Lettura fissata": "Reading held",
+    "Lettura bloccata": "Reading locked",
     "Azimut non disponibile": "Azimuth unavailable",
     "Mira verticale · azimut indefinito": "Aiming vertically · azimuth undefined",
-    "Nord del sensore · punta come per scattare una foto": "Sensor north · aim as if taking a photo",
+    "Nord del sensore": "Sensor north",
     "In attesa dell’azimut": "Waiting for azimuth",
     "Distanza dal bersaglio: {0}°": "Angle to target: {0}°",
     "Bersaglio in mira": "Target in sight",
@@ -44,7 +43,7 @@ globalThis.appLocale = (() => {
     "In attesa dei sensori…": "Waiting for sensors…",
     "Nessuna lettura. Controlla il permesso «Sensori di movimento» nel browser.": "No readings. Check the browser’s “Motion sensors” permission.",
     "Impossibile attivare i sensori.": "Couldn’t enable the sensors.",
-    "Chiudi ricerca": "Close search",
+    "Misura": "Measure",
     "Attiva i sensori per puntare": "Enable sensors to aim",
     "Posizione non disponibile": "Location unavailable",
     "Ricerca della posizione…": "Getting your location…",
@@ -65,7 +64,7 @@ globalThis.appLocale = (() => {
 
   document.documentElement.lang = language;
   if (language === 'en') {
-    document.querySelector('link[rel="manifest"]').href = "manifest-en.webmanifest?v=10";
+    document.querySelector('link[rel="manifest"]').href = "manifest-en.webmanifest?v=11";
     const walker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT);
     for (let node = walker.nextNode(); node; node = walker.nextNode()) {
       if (node.parentElement.closest('script, style')) continue;
