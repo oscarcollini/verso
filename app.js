@@ -37,14 +37,19 @@ let coordinates = '';
 const cameraVideo = byId('camera-video');
 const cameraButton = byId('camera-toggle');
 const cameraStatus = byId('camera-status');
-const zoomButton = byId('zoom-toggle');
-let zoom = 1;
-zoomButton.addEventListener('click', () => {
-  zoom = zoom === 3 ? 1 : zoom + 1;
-  zoomButton.textContent = `${zoom}×`;
-  zoomButton.setAttribute('aria-label', `Zoom ${zoom}×`);
-  zoomButton.toggleAttribute('data-enlarged', zoom > 1);
-  cameraVideo.style.setProperty('--camera-zoom', zoom);
+const fieldButton = byId('zoom-toggle');
+const fields = [
+  { label: 'Stretto', description: 'Campo stretto', screenShare: 1 },
+  { label: 'Medio', description: 'Campo medio', screenShare: 0.5 },
+  { label: 'Ampio', description: 'Campo ampio', screenShare: 0 }
+];
+let fieldIndex = 0;
+fieldButton.addEventListener('click', () => {
+  fieldIndex = (fieldIndex + 1) % fields.length;
+  const { label, description, screenShare } = fields[fieldIndex];
+  fieldButton.textContent = appLocale.text(label);
+  fieldButton.setAttribute('aria-label', appLocale.text(description));
+  cameraVideo.style.setProperty('--screen-share', screenShare);
 });
 let cameraRequest = 0;
 let cameraStream = null;
@@ -53,7 +58,7 @@ function stopCamera() {
   cameraRequest++;
   cameraStream?.getTracks().forEach(track => track.stop());
   cameraStream = null;
-  zoomButton.hidden = true;
+  fieldButton.hidden = true;
   cameraVideo.srcObject = null;
   cameraButton.textContent = appLocale.text('Attiva fotocamera');
   cameraButton.disabled = false;
@@ -80,7 +85,7 @@ cameraButton.addEventListener('click', async () => {
     cameraVideo.srcObject = stream;
     await cameraVideo.play();
     if (request !== cameraRequest) return;
-    zoomButton.hidden = false;
+    fieldButton.hidden = false;
     cameraButton.textContent = appLocale.text('Spegni fotocamera');
   } catch (error) {
     if (request !== cameraRequest) return;

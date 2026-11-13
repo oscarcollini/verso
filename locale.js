@@ -2,6 +2,12 @@
 
 globalThis.appLocale = (() => {
   const english = {
+    "Stretto": "Narrow",
+    "Medio": "Medium",
+    "Ampio": "Wide",
+    "Campo stretto": "Narrow field",
+    "Campo medio": "Medium field",
+    "Campo ampio": "Wide field",
     "Orizzontale": "Landscape",
     "Verticale": "Portrait",
     "Rotazione non disponibile. Controlla la rotazione automatica di Android.": "Couldn’t rotate. Check Android’s auto-rotate setting.",
