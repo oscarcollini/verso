@@ -1,4 +1,4 @@
-verso · 0.11
+verso · 0.12
 
 Pubblica i file estratti nella cartella servita da GitHub Pages.
 Apri l'indirizzo HTTPS in Chrome su Android e tocca Attiva sensori.
@@ -8,9 +8,10 @@ Puoi anche usare il menu di Chrome.
 Tieni il telefono in piedi, con lo schermo verso di te. L’inclinazione
 è 0° all’orizzonte, con valori positivi verso il cielo e
 negativi verso terra. Attiva fotocamera mostra la vista posteriore nella
-finestra tonda in alto, con ingrandimento 1,3×. Il video è solo un’anteprima locale. La fotocamera
+finestra tonda in alto, con ingrandimento 1,6×. Il video è solo un’anteprima locale. La fotocamera
 si spegne quando l’app passa in secondo piano.
-In Misura inquadra il punto con la croce al centro della finestra.
+In Misura un bordo giallo incornicia la pagina. Inquadra il punto con
+la croce al centro della finestra.
 Blocca ferma le due letture. Riprendi torna alle letture dal vivo.
 In Cerca inserisci azimut e altezza, poi tocca Punta. Tocca Misura per
 tornare alla croce di mira.
